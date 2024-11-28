@@ -8,9 +8,7 @@ const channelName = 'flutter.oddbit.id/facebook_app_events';
 class FacebookAppEvents {
   static const _channel = MethodChannel(channelName);
 
-  // See,
-  // android: https://github.com/facebook/facebook-android-sdk/blob/master/facebook-core/src/main/java/com/facebook/appevents/AppEventsConstants.java
-  // ios: https://github.com/facebook/facebook-ios-sdk/blob/main/FBSDKCoreKit/FBSDKCoreKit/AppEvents/FBSDKAppEventName.m
+  // See: https://github.com/facebook/facebook-android-sdk/blob/master/facebook-core/src/main/java/com/facebook/appevents/AppEventsConstants.java
   static const eventNameCompletedRegistration =
       'fb_mobile_complete_registration';
   static const eventNameViewedContent = 'fb_mobile_content_view';
@@ -243,7 +241,8 @@ class FacebookAppEvents {
   /// This is needed for California Consumer Privacy Act (CCPA) compliance
   ///
   /// See: https://developers.facebook.com/docs/marketing-apis/data-processing-options
-  Future<void> setDataProcessingOptions(List<String> options, {
+  Future<void> setDataProcessingOptions(
+    List<String> options, {
     int? country,
     int? state,
   }) {
@@ -285,16 +284,10 @@ class FacebookAppEvents {
         paramNameContentId: contentId,
         paramNameNumItems: numItems,
         paramNameCurrency: currency,
-        paramNamePaymentInfoAvailable: paymentInfoAvailable
-            ? paramValueYes
-            : paramValueNo,
+        paramNamePaymentInfoAvailable:
+            paymentInfoAvailable ? paramValueYes : paramValueNo,
       },
     );
-  }
-
-  /// Initialize Facebook SDK
-  Future<void> initialize() {
-    return _channel.invokeMethod<void>('initialize');
   }
 
   /// Sets the Advert Tracking propeety for iOS advert tracking
