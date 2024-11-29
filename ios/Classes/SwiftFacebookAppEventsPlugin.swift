@@ -155,7 +155,7 @@ public class SwiftFacebookAppEventsPlugin: NSObject, FlutterPlugin {
     }
 
     private func handleSetAutoLogAppEventsEnabled(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        let enabled = call.arguments as! Bool
+        let enabled = call.arguments as? Bool ?? true
         Settings.shared.isAutoLogAppEventsEnabled = enabled
         result(nil)
     }
@@ -183,8 +183,8 @@ public class SwiftFacebookAppEventsPlugin: NSObject, FlutterPlugin {
 
     private func handleSetAdvertiserTracking(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         let arguments = call.arguments as? [String: Any] ?? [String: Any]()
-        let enabled = arguments["enabled"] as! Bool
-        let collectId = arguments["collectId"] as! Bool
+        let enabled = arguments["enabled"] as? Bool ?? true
+        let collectId = arguments["collectId"] as? Bool ?? true
         FBAdSettings.setAdvertiserTrackingEnabled(enabled)
         Settings.shared.isAdvertiserTrackingEnabled = enabled
         Settings.shared.isAdvertiserIDCollectionEnabled = collectId
