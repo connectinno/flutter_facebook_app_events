@@ -14,6 +14,12 @@ public class SwiftFacebookAppEventsPlugin: NSObject, FlutterPlugin {
         // "Removal of Auto Initialization of SDK" section
         ApplicationDelegate.shared.initializeSDK()
 
+        // Enable Logging
+        Settings.shared.loggingBehaviors = [.appEvents]
+
+        // Disable deduplication of app events
+        Settings.shared.appEventsConfiguration = AppEventsConfiguration(appEventsConfigurationProvider: nil)
+
         registrar.addMethodCallDelegate(instance, channel: channel)
         registrar.addApplicationDelegate(instance)
     }
