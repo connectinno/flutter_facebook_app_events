@@ -4,6 +4,37 @@ import FBSDKCoreKit
 import FBSDKCoreKit_Basics
 import FBAudienceNetwork
 
+enum CustomEnv {
+    case Debug
+    case TestFlight
+    case AppStore
+}
+
+struct Config {
+    private static let isTestflight = Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
+    static var isDebug: Bool {
+        #if DEBUG
+        return true
+        #else
+        return false
+        #endif
+    }
+
+    static var environment: CustomEnv {
+        if isDebug {
+            return .Debug
+        } else if isTestflight {
+            return .TestFlight
+        } else {
+            return .AppStore
+        }
+    }
+
+    static var canAutoLogAppEvents: Bool {
+        return environment == .AppStore
+    }
+}
+
 public class SwiftFacebookAppEventsPlugin: NSObject, FlutterPlugin {
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "flutter.oddbit.id/facebook_app_events", binaryMessenger: registrar.messenger())
@@ -13,7 +44,7 @@ public class SwiftFacebookAppEventsPlugin: NSObject, FlutterPlugin {
         // See: https://developers.facebook.com/blog/post/2021/01/19/introducing-facebook-platform-sdk-version-9/
         // "Removal of Auto Initialization of SDK" section
         ApplicationDelegate.shared.initializeSDK()
-
+        Settings.shared.isAutoLogAppEventsEnabled = Config.canAutoLogAppEvents
         registrar.addMethodCallDelegate(instance, channel: channel)
         registrar.addApplicationDelegate(instance)
     }
